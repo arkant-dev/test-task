@@ -1,0 +1,60 @@
+# test-task
+
+Мок сервер на вебсокетах
+
+## Start
+
+```bash
+npm install
+npm run dev
+```
+
+## Environment variables
+
+```bash
+PORT=8080
+```
+
+## WebSocket connection
+
+```text
+ws://localhost:8080
+```
+
+Сервер віддає данні у наступному форматі
+
+```json
+{
+  "type": "objects:update",
+  "data": [
+    {
+      "id": "1",
+      "name": "Flying Object",
+      "coordinates": [
+        { "lat": 50.4501, "long": 30.5234 }
+      ],
+      "direction": "North",
+      "status": "active"
+    }
+  ]
+}
+```
+
+## Logic
+Загалом формат даних спроектований для зручності обрахунку напрямку руху.
+
+1) Для імітації руху: Використовується функція **getNextCoordinate**
+
+    coordinates це масив, що має задану початкову координату **lat i long**, щосекунди *(COORDINATE_UPDATE_INTERVAL_MS)*
+    
+     в coordinates записується новий **lat і long**, що буде близький але відмінний від останньої кординати. 
+
+2) Для визначенння напрямку руху: Використовується функція **getDirectionFromCoordinates** 
+
+    Рахується різниця 2ох останніх координат по горизонталі і вертикалі віддаю варіант у форматі **North-West** або **North** і тд.
+
+3) Для імітації вибування об'єкту: Використовується колбек **disableObject**
+
+    якщо status об'єкта стане disabled ( у кожного об'єкта є рандомний таймаут в діапозоні 30-60с, і колбек спрацьовує коли він стане disabled)
+
+    припиняється розрахунок нових coordinates, status, direction для об'єкта і видаляємо його зі списку
