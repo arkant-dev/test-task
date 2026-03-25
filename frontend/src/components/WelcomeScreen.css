@@ -1,0 +1,177 @@
+.welcome-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background:
+    radial-gradient(circle at top, rgba(255, 209, 102, 0.35), transparent 35%),
+    linear-gradient(135deg, #081f2c 0%, #103b4d 45%, #f4efe6 100%);
+}
+
+.welcome-panel {
+  overflow: hidden;
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(7, 24, 35, 0.78);
+  box-shadow: 0 32px 80px rgba(4, 13, 20, 0.35);
+}
+
+.welcome-layout {
+  min-height: 620px;
+}
+
+.welcome-content {
+  flex: 1.15;
+  justify-content: center;
+  padding: 56px;
+}
+
+.welcome-chip.MuiChip-root {
+  align-self: flex-start;
+  background-color: rgba(255, 209, 102, 0.16);
+  color: #ffd166;
+  font-weight: 700;
+}
+
+.welcome-heading.MuiTypography-root {
+  color: #f8fbff;
+  font-size: 5.5rem;
+  line-height: 0.95;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+.welcome-description.MuiTypography-root {
+  max-width: 560px;
+  color: rgba(237, 244, 250, 0.82);
+  line-height: 1.6;
+  font-size: 1.25rem;
+}
+
+.welcome-actions {
+  flex-direction: row;
+}
+
+.welcome-button.MuiButton-root {
+  padding: 12px 32px;
+  border-radius: 999px;
+  background-color: #ffd166;
+  color: #09202d;
+  font-weight: 800;
+  box-shadow: 0 14px 30px rgba(255, 209, 102, 0.28);
+}
+
+.welcome-button.MuiButton-root:hover {
+  background-color: #ffdf8d;
+}
+
+.welcome-visual {
+  flex: 0.85;
+  position: relative;
+  min-height: 320px;
+  background: linear-gradient(180deg, rgba(14, 52, 68, 0.2) 0%, rgba(14, 52, 68, 0.7) 100%);
+}
+
+.welcome-preview {
+  position: absolute;
+  inset: 24px;
+  border-radius: 24px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 209, 102, 0.95), transparent 18%),
+    radial-gradient(circle at 74% 30%, rgba(118, 215, 196, 0.92), transparent 16%),
+    radial-gradient(circle at 55% 75%, rgba(250, 119, 83, 0.88), transparent 18%),
+    linear-gradient(160deg, #0d2e3a 0%, #154b57 100%);
+}
+
+.welcome-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+.welcome-dot {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+
+.welcome-dot-start {
+  top: 18%;
+  left: 18%;
+  background-color: #ffd166;
+  box-shadow: 0 0 0 12px rgba(255, 209, 102, 0.12);
+}
+
+.welcome-dot-end {
+  right: 20%;
+  bottom: 20%;
+  background-color: #76d7c4;
+  box-shadow: 0 0 0 12px rgba(118, 215, 196, 0.12);
+}
+
+.welcome-connection {
+  position: absolute;
+  top: 24%;
+  left: 22%;
+  width: 54%;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.7);
+  transform: rotate(21deg);
+  transform-origin: left center;
+}
+
+.welcome-preview-card {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  max-width: 220px;
+  padding: 20px;
+  border-radius: 16px;
+  color: #f4fbff;
+  background-color: rgba(5, 18, 24, 0.55);
+  backdrop-filter: blur(12px);
+}
+
+.welcome-preview-label.MuiTypography-root {
+  color: #ffd166;
+  font-weight: 700;
+}
+
+.welcome-preview-title.MuiTypography-root {
+  margin-top: 8px;
+  font-weight: 700;
+}
+
+.welcome-preview-text.MuiTypography-root {
+  margin-top: 12px;
+  color: rgba(238, 245, 249, 0.8);
+}
+
+@media (max-width: 899px) {
+  .welcome-layout {
+    min-height: auto;
+  }
+
+  .welcome-content {
+    padding: 40px 24px;
+  }
+
+  .welcome-heading {
+    font-size: 3rem;
+  }
+
+  .welcome-description {
+    font-size: 1.05rem;
+  }
+}
+
+@media (max-width: 599px) {
+  .welcome-actions {
+    flex-direction: column;
+  }
+}

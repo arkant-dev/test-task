@@ -1,0 +1,53 @@
+.map-overlay-card.MuiPaper-root {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 1000;
+  width: 360px;
+  padding: 20px;
+  border-radius: 16px;
+  color: #f8fbff;
+  background-color: rgba(7, 24, 35, 0.82);
+  backdrop-filter: blur(14px);
+}
+
+.map-overlay-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.map-overlay-card__eyebrow.MuiTypography-root {
+  color: #ffd166;
+  font-weight: 700;
+}
+
+.map-overlay-card__title.MuiTypography-root {
+  font-weight: 800;
+}
+
+.map-overlay-card__text.MuiTypography-root {
+  margin-top: 8px;
+  color: rgba(232, 242, 248, 0.82);
+}
+
+.map-overlay-card__close.MuiIconButton-root {
+  align-self: flex-start;
+  color: #f8fbff;
+}
+
+.map-overlay-card__close.MuiIconButton-root:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.map-overlay-card__close-text {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+@media (max-width: 599px) {
+  .map-overlay-card {
+    width: calc(100% - 48px);
+  }
+}
