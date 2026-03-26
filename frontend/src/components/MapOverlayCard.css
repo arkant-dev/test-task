@@ -45,9 +45,3 @@
   font-size: 1.35rem;
   line-height: 1;
 }
-
-@media (max-width: 599px) {
-  .map-overlay-card {
-    width: calc(100% - 48px);
-  }
-}

@@ -23,7 +23,7 @@ export class AppStore {
     this.connectionStatus = "connecting";
     this.errorMessage = "";
 
-    this.socket = new WebSocket(process.env.REACT_APP_WS_URL ?? DEFAULT_WS_URL);
+    this.socket = new WebSocket(DEFAULT_WS_URL);
     this.socket.onopen = this.handleOpen;
     this.socket.onmessage = this.handleMessage;
     this.socket.onerror = this.handleError;

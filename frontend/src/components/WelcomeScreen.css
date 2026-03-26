@@ -151,27 +151,3 @@
   margin-top: 12px;
   color: rgba(238, 245, 249, 0.8);
 }
-
-@media (max-width: 899px) {
-  .welcome-layout {
-    min-height: auto;
-  }
-
-  .welcome-content {
-    padding: 40px 24px;
-  }
-
-  .welcome-heading {
-    font-size: 3rem;
-  }
-
-  .welcome-description {
-    font-size: 1.05rem;
-  }
-}
-
-@media (max-width: 599px) {
-  .welcome-actions {
-    flex-direction: column;
-  }
-}
