@@ -1,17 +1,18 @@
-import { createInitialObjects } from "./db/initialObjects";
+﻿import { createInitialObjects } from "./db/initialObjects";
 import { ObjectTracker } from "./core/objectTracker";
 import { createSocketServer } from "./socket/createSocketServer";
 
 const PORT = Number(process.env.PORT ?? 8080);
+const API_KEY = "demo-tracking-key";
 
 const initialObjects = createInitialObjects();
 
 const objectTracker = new ObjectTracker(initialObjects);
-const socketServer = createSocketServer(PORT, objectTracker);
+const socketServer = createSocketServer(PORT, objectTracker, API_KEY);
 
 socketServer.on("listening", () => {
   console.log(
-    `Mock websocket server is running on ws://localhost:${PORT} with ${initialObjects.length} objects`
+    `Mock websocket server is running on ws://localhost:${PORT}?key=${API_KEY} with ${initialObjects.length} objects`
   );
 });
 

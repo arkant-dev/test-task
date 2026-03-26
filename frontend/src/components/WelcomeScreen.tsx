@@ -1,11 +1,21 @@
-import { Box, Button, Chip, Container, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Container, Stack, TextField, Typography } from "@mui/material";
 import "./WelcomeScreen.css";
 
 interface WelcomeScreenProps {
-  onStart: () => void;
+  authKey: string;
+  errorMessage: string;
+  isConnecting: boolean;
+  onAuthKeyChange: (value: string) => void;
+  onStart: () => void | Promise<void>;
 }
 
-export const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
+export const WelcomeScreen = ({
+  authKey,
+  errorMessage,
+  isConnecting,
+  onAuthKeyChange,
+  onStart
+}: WelcomeScreenProps) => {
   return (
     <Box className="welcome-screen">
       <Container maxWidth="lg">
@@ -17,12 +27,29 @@ export const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
                 Відслідковуйте кожен рух.
               </Typography>
               <Typography variant="h5" className="welcome-description">
-                Ознайомтесь із цим додатком-трекером рухомих об'єктів. Відривайте мапу і
+                Ознайомтесь із цим додатком-трекером рухомих об&apos;єктів. Відривайте мапу і
                 спостерігайте, як маркери рухаються.
               </Typography>
+              <TextField
+                type="password"
+                label="Ключ доступу"
+                value={authKey}
+                onChange={(event) => onAuthKeyChange(event.target.value)}
+                error={Boolean(errorMessage)}
+                helperText={errorMessage || "Введіть унікальний ключ, щоб відкрити мапу"}
+                autoComplete="off"
+                className="welcome-key-input"
+                fullWidth
+              />
               <Stack direction={{ xs: "column", sm: "row" }} spacing={2} className="welcome-actions">
-                <Button variant="contained" size="large" onClick={onStart} className="welcome-button">
-                  Розпочати
+                <Button
+                  variant="contained"
+                  size="large"
+                  onClick={onStart}
+                  className="welcome-button"
+                  disabled={!authKey.trim() || isConnecting}
+                >
+                  {isConnecting ? "Перевірка..." : "Розпочати"}
                 </Button>
               </Stack>
             </Stack>
@@ -41,7 +68,7 @@ export const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
                     200 стартових елементів на мапі.
                   </Typography>
                   <Typography variant="body2" className="welcome-preview-text">
-                    Об'єкти зникають лише через 5 хвилин після втрати зв'язку.
+                    Об&apos;єкти зникають лише через 5 хвилин після втрати зв&apos;язку.
                   </Typography>
                 </Box>
               </Box>

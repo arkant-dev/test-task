@@ -7,27 +7,76 @@ const DEFAULT_WS_URL = "ws://localhost:8080";
 export class AppStore {
   public connectionStatus: "idle" | "connecting" | "connected" | "error" = "idle";
   public errorMessage = "";
+  public authKey = "";
   private socket: WebSocket | null = null;
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
-  public connect(): void {
-    if (this.socket &&
-        (this.socket.readyState === WebSocket.OPEN
-        || this.socket.readyState === WebSocket.CONNECTING)) {
-      return;
+  public setAuthKey(value: string): void {
+    this.authKey = value;
+  }
+
+  public async connect(authKey: string): Promise<boolean> {
+    const normalizedKey = authKey.trim();
+
+    if (!normalizedKey) {
+      this.connectionStatus = "error";
+      this.errorMessage = "Введіть ключ доступу";
+      return false;
     }
 
+    if (
+      this.socket &&
+      (this.socket.readyState === WebSocket.OPEN || this.socket.readyState === WebSocket.CONNECTING)
+    ) {
+      return this.connectionStatus === "connected";
+    }
+
+    this.authKey = normalizedKey;
     this.connectionStatus = "connecting";
     this.errorMessage = "";
 
-    this.socket = new WebSocket(DEFAULT_WS_URL);
-    this.socket.onopen = this.handleOpen;
-    this.socket.onmessage = this.handleMessage;
-    this.socket.onerror = this.handleError;
-    this.socket.onclose = this.handleClose;
+    return new Promise((resolve) => {
+      let isResolved = false;
+      let hasOpened = false;
+      const socketUrl = new URL(process.env.REACT_APP_WS_URL ?? DEFAULT_WS_URL);
+
+      socketUrl.searchParams.set("key", normalizedKey);
+
+      this.socket = new WebSocket(socketUrl.toString());
+
+      this.socket.onopen = () => {
+        hasOpened = true;
+        this.handleOpen();
+
+        if (!isResolved) {
+          isResolved = true;
+          resolve(true);
+        }
+      };
+
+      this.socket.onmessage = this.handleMessage;
+
+      this.socket.onerror = () => {
+        this.handleError();
+
+        if (!isResolved) {
+          isResolved = true;
+          resolve(false);
+        }
+      };
+
+      this.socket.onclose = () => {
+        this.handleClose(hasOpened);
+
+        if (!isResolved) {
+          isResolved = true;
+          resolve(false);
+        }
+      };
+    });
   }
 
   public disconnect(): void {
@@ -42,11 +91,13 @@ export class AppStore {
     this.socket.close();
     this.socket = null;
     this.connectionStatus = "idle";
+    this.errorMessage = "";
     mapStore.clearObjects();
   }
 
   private handleOpen(): void {
     this.connectionStatus = "connected";
+    this.errorMessage = "";
   }
 
   private handleMessage(event: MessageEvent<string>): void {
@@ -58,17 +109,20 @@ export class AppStore {
       }
     } catch (error) {
       this.connectionStatus = "error";
-      this.errorMessage = error instanceof Error ? error.message : "Failed to parse websocket data";
+      this.errorMessage = error instanceof Error ? error.message : "Не вдалося обробити дані websocket";
     }
   }
 
   private handleError(): void {
     this.connectionStatus = "error";
-    this.errorMessage = "WebSocket connection failed";
+    this.errorMessage = "Невірний ключ доступу або сервер недоступний";
   }
 
-  private handleClose(): void {
-    if (this.connectionStatus !== "error") {
+  private handleClose(hasOpened: boolean): void {
+    if (!hasOpened) {
+      this.connectionStatus = "error";
+      this.errorMessage = "Невірний ключ доступу або сервер недоступний";
+    } else if (this.connectionStatus !== "error") {
       this.connectionStatus = "idle";
     }
 

@@ -1,13 +1,25 @@
+﻿import { IncomingMessage } from "node:http";
 import { WebSocket, WebSocketServer } from "ws";
 import { ObjectTracker } from "../core/objectTracker";
 
 const BROADCAST_INTERVAL_MS = 1_000;
+const DEFAULT_HOST = "localhost";
+
+const isAuthorized = (request: IncomingMessage, apiKey: string): boolean => {
+  const url = new URL(request.url ?? "/", `ws://${request.headers.host ?? DEFAULT_HOST}`);
+
+  return url.searchParams.get("key") === apiKey;
+};
 
 export const createSocketServer = (
   port: number,
-  objectTracker: ObjectTracker
+  objectTracker: ObjectTracker,
+  apiKey: string
 ): WebSocketServer => {
-  const socketServer = new WebSocketServer({ port });
+  const socketServer = new WebSocketServer({
+    port,
+    verifyClient: ({ req }: { req: IncomingMessage }) => isAuthorized(req, apiKey)
+  });
 
   socketServer.on("connection", (socket) => {
     socket.send(

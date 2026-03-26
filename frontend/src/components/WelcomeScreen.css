@@ -1,4 +1,4 @@
-.welcome-screen {
+﻿.welcome-screen {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -46,6 +46,28 @@
   color: rgba(237, 244, 250, 0.82);
   line-height: 1.6;
   font-size: 1.25rem;
+}
+
+.welcome-key-input .MuiInputBase-root {
+  color: #f8fbff;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.welcome-key-input .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.welcome-key-input .MuiInputLabel-root,
+.welcome-key-input .MuiFormHelperText-root {
+  color: rgba(237, 244, 250, 0.82);
+}
+
+.welcome-key-input .MuiInputLabel-root.Mui-focused {
+  color: #ffd166;
+}
+
+.welcome-key-input .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #ffd166;
 }
 
 .welcome-actions {
@@ -150,4 +172,28 @@
 .welcome-preview-text.MuiTypography-root {
   margin-top: 12px;
   color: rgba(238, 245, 249, 0.8);
+}
+
+@media (max-width: 899px) {
+  .welcome-layout {
+    min-height: auto;
+  }
+
+  .welcome-content {
+    padding: 40px 24px;
+  }
+
+  .welcome-heading {
+    font-size: 3rem;
+  }
+
+  .welcome-description {
+    font-size: 1.05rem;
+  }
+}
+
+@media (max-width: 599px) {
+  .welcome-actions {
+    flex-direction: column;
+  }
 }
