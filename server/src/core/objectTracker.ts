@@ -3,6 +3,7 @@ import { Direction, Coordinate, TrackedObject } from "../types";
 const COORDINATE_UPDATE_INTERVAL_MS = 1_000;
 const DISABLE_TIMEOUT_MIN_MS = 30_000;
 const DISABLE_TIMEOUT_MAX_MS = 120_000;
+const REMOVE_DISABLED_OBJECT_DELAY_MS = 5 * 60 * 1_000;
 
 const roundCoordinate = (value: number): number => Number(value.toFixed(6));
 
@@ -23,10 +24,8 @@ export const getDirectionFromCoordinates = (
   const latDiff = nextCoordinate.lat - previousCoordinate.lat;
   const longDiff = nextCoordinate.long - previousCoordinate.long;
 
-  const vertical =
-    latDiff > 0 ? "North" : latDiff < 0 ? "South" : "";
-  const horizontal =
-    longDiff > 0 ? "East" : longDiff < 0 ? "West" : "";
+  const vertical = latDiff > 0 ? "North" : latDiff < 0 ? "South" : "";
+  const horizontal = longDiff > 0 ? "East" : longDiff < 0 ? "West" : "";
 
   if (vertical && horizontal) {
     return `${vertical}-${horizontal}` as Direction;
@@ -57,6 +56,7 @@ export class ObjectTracker {
   private readonly objects = new Map<string, TrackedObject>();
   private readonly updateTimers = new Map<string, NodeJS.Timeout>();
   private readonly disableTimers = new Map<string, NodeJS.Timeout>();
+  private readonly removalTimers = new Map<string, NodeJS.Timeout>();
 
   constructor(initialObjects: TrackedObject[]) {
     initialObjects.forEach((trackedObject) => {
@@ -65,20 +65,20 @@ export class ObjectTracker {
     });
   }
 
-  public getActiveObjects(): TrackedObject[] {
-    return Array.from(this.objects.values())
-      .filter((trackedObject) => trackedObject.status === "active")
-      .map((trackedObject) => ({
-        ...trackedObject,
-        coordinates: [...trackedObject.coordinates]
-      }));
+  public getObjects(): TrackedObject[] {
+    return Array.from(this.objects.values()).map((trackedObject) => ({
+      ...trackedObject,
+      coordinates: [...trackedObject.coordinates]
+    }));
   }
 
   public stop(): void {
     this.updateTimers.forEach((timer) => clearInterval(timer));
     this.disableTimers.forEach((timer) => clearTimeout(timer));
+    this.removalTimers.forEach((timer) => clearTimeout(timer));
     this.updateTimers.clear();
     this.disableTimers.clear();
+    this.removalTimers.clear();
   }
 
   private startTracking(objectId: string): void {
@@ -135,6 +135,21 @@ export class ObjectTracker {
     if (disableTimer) {
       clearTimeout(disableTimer);
       this.disableTimers.delete(objectId);
+    }
+
+    const removalTimer = setTimeout(() => {
+      this.removeObject(objectId);
+    }, REMOVE_DISABLED_OBJECT_DELAY_MS);
+
+    this.removalTimers.set(objectId, removalTimer);
+  }
+
+  private removeObject(objectId: string): void {
+    const removalTimer = this.removalTimers.get(objectId);
+
+    if (removalTimer) {
+      clearTimeout(removalTimer);
+      this.removalTimers.delete(objectId);
     }
 
     this.objects.delete(objectId);

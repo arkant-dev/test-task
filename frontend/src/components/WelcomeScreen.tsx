@@ -1,4 +1,4 @@
-import { Box, Button, Chip, Container, Stack, Typography } from "@mui/material";
+﻿import { Box, Button, Chip, Container, Stack, Typography } from "@mui/material";
 import "./WelcomeScreen.css";
 
 interface WelcomeScreenProps {
@@ -14,12 +14,11 @@ export const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
             <Stack spacing={3} className="welcome-content">
               <Chip label="Live Tracking Dashboard" className="welcome-chip" />
               <Typography variant="h1" className="welcome-heading">
-                Track every move on one map.
+                Відслідковуйте кожен рух.
               </Typography>
               <Typography variant="h5" className="welcome-description">
-                Welcome to the control view for monitored objects. Open the map, inspect
-                the first markers, and prepare the screen for websocket-driven updates from
-                the server.
+                Ознайомтесь із цим додатком-трекером рухомих об'єктів. Відривайте мапу і
+                спостерігайте, як маркери рухаються.
               </Typography>
               <Stack direction={{ xs: "column", sm: "row" }} spacing={2} className="welcome-actions">
                 <Button variant="contained" size="large" onClick={onStart} className="welcome-button">
@@ -39,11 +38,10 @@ export const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
                     Live Preview
                   </Typography>
                   <Typography variant="h6" className="welcome-preview-title">
-                    Two initial positions are ready on the map.
+                    200 стартових елементів на мапі.
                   </Typography>
                   <Typography variant="body2" className="welcome-preview-text">
-                    The next screen opens a full viewport Leaflet map with the base tracking
-                    markers.
+                    Об'єкти зникають лише через 5 хвилин після втрати зв'язку.
                   </Typography>
                 </Box>
               </Box>
