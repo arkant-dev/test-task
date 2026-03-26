@@ -1,8 +1,9 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { Box } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { CircleMarker, MapContainer, TileLayer, Tooltip } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import { MapOverlayCard } from "./MapOverlayCard";
+import { TrackedObjectMarker } from "./TrackedObjectMarker";
 import { appStore } from "../store/AppStore";
 import { mapStore } from "../store/MapStore";
 import "leaflet/dist/leaflet.css";
@@ -20,33 +21,14 @@ export const MapScreen = observer(() => {
         />
 
         {mapStore.latestCoordinates.map((point) => (
-          <CircleMarker
+          <TrackedObjectMarker
             key={point.id}
-            center={point.position}
-            radius={12}
-            pathOptions={{
-              color:
-                point.status === "disabled"
-                  ? "#7a7f87"
-                  : point.id.includes("flying")
-                    ? "#ff7c43"
-                    : "#2a9d8f",
-              fillColor:
-                point.status === "disabled"
-                  ? "#b6bbc4"
-                  : point.id.includes("flying")
-                    ? "#ffb997"
-                    : "#9be7da",
-              fillOpacity: 0.9,
-              weight: 3
-            }}
-          >
-            <Tooltip direction="top" offset={[0, -10]} opacity={1} permanent>
-              {point.status === "disabled"
-                ? `${point.name} | Втрачено зв'язок`
-                : `${point.name} | ${point.direction}`}
-            </Tooltip>
-          </CircleMarker>
+            id={point.id}
+            name={point.name}
+            position={point.position}
+            direction={point.direction}
+            status={point.status}
+          />
         ))}
       </MapContainer>
 

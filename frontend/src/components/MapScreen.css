@@ -1,10 +1,28 @@
-.map-screen {
+﻿.map-screen {
   position: relative;
   width: 100vw;
   height: 100vh;
 }
 
 .map-screen__map {
+  width: 100%;
+  height: 100%;
+}
+
+.tracked-object-marker-icon {
+  background: transparent;
+  border: 0;
+}
+
+.tracked-object-marker {
+  width: 28px;
+  height: 40px;
+  transform-origin: 50% 50%;
+  filter: drop-shadow(0 6px 10px rgba(7, 24, 35, 0.3));
+}
+
+.tracked-object-marker__svg {
+  display: block;
   width: 100%;
   height: 100%;
 }

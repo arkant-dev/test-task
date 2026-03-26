@@ -1,4 +1,4 @@
-﻿import { Box, Button, Chip, Container, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Container, Stack, Typography } from "@mui/material";
 import "./WelcomeScreen.css";
 
 interface WelcomeScreenProps {
