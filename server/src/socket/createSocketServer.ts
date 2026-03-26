@@ -5,7 +5,7 @@ const BROADCAST_INTERVAL_MS = 1_000;
 
 export const createSocketServer = (
   port: number,
-  objectTracker: ObjectTracker,
+  objectTracker: ObjectTracker
 ): WebSocketServer => {
   const socketServer = new WebSocketServer({ port });
 
@@ -13,7 +13,7 @@ export const createSocketServer = (
     socket.send(
       JSON.stringify({
         type: "objects:update",
-        data: objectTracker.getActiveObjects()
+        data: objectTracker.getObjects()
       })
     );
   });
@@ -21,7 +21,7 @@ export const createSocketServer = (
   const broadcastTimer = setInterval(() => {
     const payload = JSON.stringify({
       type: "objects:update",
-      data: objectTracker.getActiveObjects()
+      data: objectTracker.getObjects()
     });
 
     socketServer.clients.forEach((client) => {
